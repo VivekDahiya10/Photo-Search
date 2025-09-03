@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyage Photo Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-search"></i>
+                Voyage Photo Search
+            </h1>
+            <p class="subtitle">Semantic photo search powered by Voyage AI multimodal embeddings</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Describe what you're looking for..." autocomplete="off">
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="upload-section">
+                <label for="imageUpload" class="upload-btn">
+                    <i class="fas fa-image"></i>
+                    Search by Image
+                </label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                <div id="uploadPreview" class="upload-preview"></div>
+            </div>
+
+            <div class="add-photo-section">
+                <button id="addPhotoBtn" class="add-photo-btn">
+                    <i class="fas fa-plus"></i>
+                    Add New Photo
+                </button>
+            </div>
+
+            <div class="search-suggestions">
+                <span class="suggestion-label">Try searching for:</span>
+                <button class="suggestion-btn" data-query="sunset over mountains">Sunset over mountains</button>
+                <button class="suggestion-btn" data-query="cozy coffee shop interior">Cozy coffee shop</button>
+                <button class="suggestion-btn" data-query="person reading a book">Person reading</button>
+                <button class="suggestion-btn" data-query="modern architecture">Modern architecture</button>
+                <button class="suggestion-btn" data-query="fresh vegetables on table">Fresh vegetables</button>
+            </div>
+        </div>
+
+
+        <div class="results-info">
+            <span id="resultsCount"></span>
+            <span id="searchTime"></span>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Searching with AI embeddings...</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p id="errorText">Something went wrong. Please try again.</p>
+        </div>
+
+        <div class="photos-grid" id="photosGrid">
+            <!-- Photos will be dynamically inserted here -->
+        </div>
+
+        <div class="load-more-container">
+            <button id="loadMoreBtn" class="load-more-btn">
+                <i class="fas fa-plus"></i>
+                Load More Photos
+            </button>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <div class="modal-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDescription"></p>
+                <div class="similarity-score">
+                    <span id="similarityScore">
+                        <i class="fas fa-brain"></i>
+                        Similarity: <span id="scoreValue">0%</span>
+                    </span>
+                </div>
+                <div class="modal-stats">
+                    <span id="modalLikes"><i class="fas fa-heart"></i> 0</span>
+                    <span id="modalViews"><i class="fas fa-eye"></i> 0</span>
+                </div>
+                <div class="modal-author">
+                    <img id="authorAvatar" src="" alt="">
+                    <div>
+                        <p class="author-name" id="authorName"></p>
+                        <p class="author-username" id="authorUsername"></p>
+                    </div>
+                </div>
+                <a id="downloadLink" class="download-btn" target="_blank">
+                    <i class="fas fa-download"></i>
+                    View Original
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Photo Modal -->
+    <div class="modal" id="addPhotoModal">
+        <div class="modal-content add-photo-modal">
+            <span class="close-btn" id="closeAddPhotoModal">&times;</span>
+            <h2><i class="fas fa-plus"></i> Add New Photos</h2>
+            
+            <!-- Modal Error Message -->
+            <div class="error-message" id="modalErrorMessage">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p id="modalErrorText">Something went wrong. Please try again.</p>
+            </div>
+
+            <!-- Modal Success Message -->
+            <div class="success-message" id="modalSuccessMessage">
+                <i class="fas fa-check-circle"></i>
+                <p id="modalSuccessText">Success!</p>
+            </div>
+            
+            <form id="addPhotoForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="photoFile">Photo Files *</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="photoFile" name="photos" accept="image/*" multiple required>
+                        <div class="upload-placeholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to select or drag & drop multiple images</p>
+                            <small>Supports JPEG, PNG, WebP (max 10MB each) - Select multiple files</small>
+                        </div>
+                        <div id="photoPreview" class="photo-preview"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="cancelAddPhoto" class="cancel-btn">Cancel</button>
+                    <button type="submit" id="submitPhoto" class="submit-btn">
+                        <i class="fas fa-upload"></i>
+                        Add Photos
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
